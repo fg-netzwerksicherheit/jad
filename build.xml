@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Jad with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/home/grobma/downloads/jad.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="com.jad.idmef.core.Test"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ REngine.jar RserveEngine.jar junit.jar org.hamcrest.core_1.1.0.v20090501071000.jar jdom-2.0.4.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="/home/grobma/repositories/Jad/bin"/>
+            <zipfileset dir="/home/grobma/repositories/Jad/lib" includes="REngine.jar"/>
+            <zipfileset dir="/home/grobma/repositories/Jad/lib" includes="RserveEngine.jar"/>
+            <zipfileset dir="/home/grobma/opt/eclipse/plugins/org.junit_4.10.0.v4_10_0_v20120426-0900" includes="junit.jar"/>
+            <zipfileset dir="/home/grobma/opt/eclipse/plugins" includes="org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+            <zipfileset dir="/home/grobma/repositories/Jad/lib" includes="jdom-2.0.4.jar"/>
+        </jar>
+    </target>
+</project>
