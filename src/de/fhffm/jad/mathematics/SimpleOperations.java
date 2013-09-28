@@ -52,7 +52,7 @@ public class SimpleOperations {
 	 */
 	public double mean(IDataFieldEnum field){
 		try {
-			String command = "mean("+dw.getVariableName()+"$"+field.getName()+")";
+			String command = "mean("+dw.getVariableName()+"$"+field.getName()+")";			
 			double d= c.eval(command).asDouble();
 			return d;
 		} catch (REXPMismatchException e) {
@@ -220,6 +220,45 @@ public class SimpleOperations {
 			e.printStackTrace();
 		}
 		return sum;
+	}
+	
+	/**
+	 * @param field
+	 * @return the Probability for the distribution of this field
+	 */
+	public double entrophy(IDataFieldEnum field){
+		double result = 0;
+		
+		//This R-Command may look a bit crazy - The formular is
+		//
+		// P_total = Sum 0-n ( (packet_with_valueX_count / packet_count) * log(unique_value_count)
+		//
+		//Here a detailed describtion of the command:
+		//table(x$ip.src)[] returns the observationcount for each unique value
+		//nrow returns the number of observations
+		//length unique returns the number of distinct values
+		//table / nrow = probability for this value
+		//the probability is normalized with the log-value (Result between 0 and 1)
+		//we can finally return the sum of each probability
+		//sum((table(x$ip.src)[] / nrow(x)) * log(length (unique(x$ip.src) ) ) * (table(x$ip.src)[] / nrow(x)) )
+
+		try {
+			String command = "sum((table("+dw.getVariableName()+"$"+field.getName()+")[] / nrow("+dw.getVariableName()+")) * log(length(unique("+dw.getVariableName()+"$"+field.getName()+")))* (table("+dw.getVariableName()+"$"+field.getName()+")[] / nrow("+dw.getVariableName()+")) )";
+			result = c.eval(command).asDouble();
+			
+			if( result < 0 ) {
+				result = 0;
+			}
+			if( result > 1 ) {
+				result = 1;
+			}
+			
+			} catch (RserveException | REXPMismatchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 
 }

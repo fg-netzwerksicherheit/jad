@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.fhffm.jad.data.DataWrapper;
+import de.fhffm.jad.data.EInputFields;
 import de.fhffm.jad.data.IDataFieldEnum;
 import de.fhffm.jad.mathematics.SimpleOperations;
 
@@ -36,6 +37,7 @@ import de.fhffm.jad.mathematics.SimpleOperations;
 public class TestSimpleOperations {
 
 	private DataWrapper dw;
+	private DataWrapper dwInputFields;
 	
 	@Before
 	public void before(){
@@ -46,6 +48,19 @@ public class TestSimpleOperations {
 		dw.addObservation(new String[]{"1"});
 		dw.addObservation(new String[]{"3"});
 		dw.addObservation(new String[]{"5"});
+		
+		/*
+		 * Test a more complex Data.Frame with several numerical and
+		 * character fields
+		 */
+		dwInputFields = new DataWrapper("testdata2");
+		ArrayList<IDataFieldEnum> inputfields = new ArrayList<IDataFieldEnum>();
+		inputfields.add(EInputFields.ipsrc);
+		inputfields.add(EInputFields.framelen);
+		dwInputFields.createEmptyDataFrame(inputfields);
+		dwInputFields.addObservation(new String[]{"192.168.0.1","100"});
+		dwInputFields.addObservation(new String[]{"192.168.0.1","300"});
+		dwInputFields.addObservation(new String[]{"192.168.0.1","500"});
 	}
 	
 	@Test
@@ -57,6 +72,17 @@ public class TestSimpleOperations {
 		double mean = so.mean(ETestdata.x);
 		//(expected, actual, allowed deviation)
 		assertEquals((1+3+5)/3, mean, 0);
+	}
+	
+	@Test
+	/**
+	 * mean(1,3,5) should return (1+3+5)/3
+	 */
+	public void testInputFieldsMean() {
+		SimpleOperations so = new SimpleOperations(dwInputFields);
+		double mean = so.mean(EInputFields.framelen);
+		//(expected, actual, allowed deviation)
+		assertEquals((100+300+500)/3, mean, 0);
 	}
 	
 	@Test

@@ -79,7 +79,7 @@ public class DataWrapper {
 		try {
 			//Check for Escape-Sequences
 			filename = filename.replace("\\", "/");
-			String command = name+ " <- read.table(file='"+filename+"',head=TRUE,sep=';')";
+			String command = name+ " <- read.table(file='"+filename+"',head=TRUE,sep=';',stringsAsFactors=FALSE)";
 			c.voidEval(command);
 			String command_size = "length("+name+")";
 			this.size = c.eval(command_size).asInteger();
@@ -115,7 +115,7 @@ public class DataWrapper {
 			sb.append(field.getName()+"="+field.getTyp()+"(0),");
 		}
 		//remove last ',' and build the complete command
-		String command_ini = name+" <- data.frame("+sb.subSequence(0, sb.length()-1).toString()+")";
+		String command_ini = name+" <- data.frame("+sb.toString()+"stringsAsFactors=FALSE)";
 		//execute
 		try {
 			c.voidEval(command_ini);
@@ -189,7 +189,7 @@ public class DataWrapper {
 				sb.append("as.character('"+s+"'),");
 			}
 		}
-		String command = name+"[nrow("+name+")+1,] <- c("+sb.subSequence(0, sb.length()-1).toString()+")";
+		String command = name+"[nrow("+name+")+1,] <- data.frame("+sb.toString()+"stringsAsFactors=FALSE)";
 		//execute
 		try {
 			c.voidEval(command);
@@ -253,6 +253,8 @@ public class DataWrapper {
 		//Check if data.frame is initialized
 		RList l = getDataFrame();
 		if(l==null)
+			return;
+		if(getObservationCount() == 0)
 			return;
 		
 		//Convert to String[][]

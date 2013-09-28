@@ -35,11 +35,11 @@ public class ExampleScript {
 		
 		//The name http was used in the R script to further process this data.frame ...
 		DataWrapper original = new DataWrapper("http");
-		original.createDataFramefromCSV(System.getProperty("user.dir") + "\\data\\http.csv");
+		original.createDataFramefromCSV(System.getProperty("user.dir") + "\\data\\pcaptest.csv");
 		
 		//Path to the R Script (JAD-Project-Directory) + Script
 		//This R-Script implements PHAD (Packet Header Anomaly Detection)
-		String path = System.getProperty("user.dir") + "\\data\\examplescript.R";		
+		String path = System.getProperty("user.dir") + "\\data\\rscript-header.txt";		
 		//This Class implements the function to execute R-Scripts
 		RScript script = new RScript(path);
 		//REXP is a generic type to store the results provided by RServe
@@ -47,7 +47,7 @@ public class ExampleScript {
 		double[] x = null;
 		try {
 			//Convert to Array of Doubles
-			x = result.asDoubles();
+				x = result.asDoubles();
 		} catch (REXPMismatchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

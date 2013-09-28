@@ -35,3 +35,10 @@
  
  2013/09/01 Added Support for custom Scripts
  
+ 2013/09/21 Added Support to calculate Entrophy
+            
+            Bug-Fixes: Solved problems with Strings 
+            
+            Bug-Fixes: Solved problems with print
+            
+            Bug-Fixes: Changed Example-R-Script
